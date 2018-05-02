@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sqlRoot id="">
+	<!-- 加载日期 -->	
+	<sql id="getcities_nbiot" type="ftl">
+	<![CDATA[
+		select DISTINCT district as city_cn from tas_master.V_CTHQQOE_QOE_DISTRICT where cityname = '${cityparam}'
+	]]>
+	</sql>
+	
+	
+	
+	
+</sqlRoot>

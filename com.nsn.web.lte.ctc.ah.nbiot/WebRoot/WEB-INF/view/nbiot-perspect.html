@@ -1,0 +1,187 @@
+﻿<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>总体监控</title>
+<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css" />
+<link rel="stylesheet" href="static/css/style.css" type="text/css" />
+<link rel="stylesheet" href="static/css/layui.css" />
+<link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" href="static/css/nbiot.css" type="text/css" />
+<script type="text/javascript" src="static/js/charts/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="static/js/jquery.nicescroll.js"></script>
+<script type="text/javascript" src="/static/plugins/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="/static/plugins/highcharts/highcharts-more.js"></script>
+<script type="text/javascript" src="/static/plugins/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.dataTables.js"></script>
+<!-- <script src='../dwr/engine.js'></script>
+<script src='../dwr/util.js'></script> -->
+<script type="text/javascript" src="static/js/util.js"></script>
+<!-- <script src='../dwr/interface/nbiotService.js'></script>
+<script src='../dwr/interface/pageService.js'></script>
+<script src='../dwr/interface/userinfoService.js'></script> -->
+<script type="text/javascript" src="/static/plugins/layer/layer.js"></script>
+<script type='text/javascript' src='static/js/My97Date/WdatePicker.js'></script>
+<script type="text/javascript" src="static/js/public.js"></script>
+<script src="/static/plugins/laydate/laydate.js"></script>
+<script type="text/javascript" src="static/js/nbiot-perspect.js"></script>
+</head>
+<body>
+	<div id="fjMoPageWrap">
+		<div id="moHeaderCon">
+			<script>
+				initTopMenu();
+			</script>
+		</div>
+		<div id="moMainBodyCon">
+			<h2 class="titleNav01">
+				<!-- <script>
+					initTopQueryForSpatil("总体监控");
+				</script> -->
+				<a id="dimension">总体监控</a>
+				<label>日期</label>
+				<input type="text" id="sdate" class="J-SDATE" />
+				<div style="text-align: center; float: right;font-size: 14px;">
+					物联网在网用户数 <label id="internet_users" class="online_user"></label>
+				</div>
+			</h2>
+			<div class="container">
+				<div class="top pers-top" style="height: 155px">
+<!-- 					<div class="dashpanel"> -->
+<!-- 						<div> -->
+<!-- 							<i class="fa fa-truck fa-dash"></i> -->
+<!-- 							<p>物流与交通</p> -->
+<!-- 						</div> -->
+<!-- 						<div> -->
+<!-- 							<p><span class="dash-split">4G</span><span class="dash-split"><font class="dash-font">22222</font>户</span><span class="dash-split"><font class="dash-font">1</font>G</span></p> -->
+<!-- 							<p><span class="dash-split">3G</span><span class="dash-split"><font class="dash-font">22222</font>户</span><span class="dash-split"><font class="dash-font">1</font>G</span></p> -->
+<!-- 							<p><span class="dash-split">NB-IoT</span><span class="dash-split"><font class="dash-font">22222</font>户</span><span class="dash-split"><font class="dash-font">1</font>G</span></p> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+					<div class="dashpanel"></div>
+					<div class="dashpanel"></div>
+					<div class="dashpanel"></div>
+					<div class="dashpanel"></div>
+					<div class="dashpanel"></div>
+					<div class="dashpanel"></div>
+					<div class="dashpanel"></div>
+					<div class="dashpanel"></div>
+					<div class="dashpanel"></div>
+					<div class="dashpanel"></div>
+				</div>
+				<div class="bottom" style="height: 70%;    padding: 0 0.5%;">
+					<ul class="layui-tab-title" style="background: #27496f;margin-bottom: 5px;height:40px;white-space: inherit;">
+						<li class="layui-this nbiot-pers-viewtype-tab" network="4G"><i class="fa fa-flag"></i>4G物联网</li>
+						<li class="nbiot-pers-viewtype-tab" network="3G"><i class="fa fa-flag"></i>3G物联网</li>
+						<li class="nbiot-pers-viewtype-tab" network="NB"><i class="fa fa-flag"></i>NB-IoT物联网</li>
+					</ul>
+					<div class="top" style="height:48%;">
+						<div class="left" style="width:99.8%;height:100%;margin-right: 0.5%">
+							<div class="left nbiot-perspect-chart">
+								<p style='position: absolute;width: 97%;'><i class="fa fa-flag"></i>当前客户量<span><font id="nbiot-perspect-customcount-total" style="color: #ECA000;">-</font>户</span></p>
+<!-- 								<div class="position_box"><i class="fa fa-tty fa-chart-center"></i></div> -->
+								<div id="nbiot-perspect-customcount"></div>
+							</div>
+							<div class="center nbiot-perspect-chart">
+								<p style='position: absolute;width: 97%;'><i class="fa fa-flag"></i>流量<span><font id="nbiot-perspect-traffic-total" style="color: #ECA000;">-</font>M</span></p>
+<!-- 								<div class="position_box"><i class="fa fa-wifi fa-chart-center"></i></div> -->
+								<div id="nbiot-perspect-traffic"></div>
+							</div>
+							<div class="right nbiot-perspect-chart">
+								<p style='position: absolute;width: 97%;'><i class="fa fa-flag"></i>业务请求次数<span><font id="nbiot-perspect-servrequest-total" style="color: #ECA000;">-</font>次</span></p>
+<!-- 								<div class="position_box"><i class="fa fa-paper-plane fa-chart-center"></i></div> -->
+								<div id="nbiot-perspect-servrequest"></div>
+							</div>
+							<div class="center nbiot-perspect-chart">
+								<p style='position: absolute;width: 97%;'><i class="fa fa-flag"></i>平均每用户业务流量<span><font id="nbiot-perspect-averageservice-total" style="color: #ECA000;">-</font>MB</span></p>
+<!-- 								<div class="position_box"><i class="fa fa-paper-plane fa-chart-center"></i></div> -->
+								<div id="nbiot-perspect-averageservice"></div>
+							</div>
+							<div class="right nbiot-perspect-chart">
+								<p style='position: absolute;width: 97%;'><i class="fa fa-flag"></i>终端类型占比<span><font id="nbiot-perspect-terminal-total" style="color: #ECA000;">-</font></span></p>
+<!-- 								<div class="position_box"><i class="fa fa-paper-plane fa-chart-center"></i></div> -->
+								<div id="nbiot-perspect-terminal"></div>
+							</div>
+						</div>
+						<!-- <div class="right" style="width:39.5%;height:100%;">
+							<div class="top nbiot-perspect-chart" style="height:49.5%;margin-bottom:0.5%">
+								<p class="switchtab" ><i class="fa fa-flag"></i>用户量<span class="nbiot-tab-span nbiot-pers-usercount-tab" data="1" dir="m">月</span><span class="nbiot-tab-span nbiot-pers-usercount-tab nth-span-active" data="1" dir="d">天</span></p>
+								<div id="nbiot-perspect-usercounts"></div>
+							</div>
+							<div class="bottom nbiot-perspect-chart" style="height:49%;">
+								<p class="switchtab"><i class="fa fa-flag"></i>数据流量<span class="nbiot-tab-span nbiot-pers-wifi-tab" data="2" dir="m">月</span><span class="nbiot-tab-span nbiot-pers-usercount-tab nth-span-active" data="2" dir="d">天</span></p>
+								<div id="nbiot-perspect-trafficup"></div>
+							</div>
+						</div> -->
+					</div>
+					<ul class="layui-tab-title" style="background: #27496f;height:40px;margin: 7px 0;">
+						<li style="padding: 0 10px;"><i class="fa fa-flag"></i>指标性能排名</li>
+					</ul>
+					<div class="bottom nbiot-perspect-chart" style="height: 40%;margin-bottom: 2%;">
+						<div class="dashpanel-table" id="nbiot-perspect-table-scene">
+								<p><i class="fa fa-flag"></i>行业排名-TOP5<span class="nbiot-tab-span nbiot-pers-order-tab" data="1" dir="down">B</span><span class="nbiot-tab-span nbiot-pers-order-tab nth-span-active" data="1" dir="up">T</span></p>
+								<!-- 
+								<p><span class="span span-left"><label class="label_num label_num_1">1</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-1"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_2">2</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-2"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_3">3</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-3"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_4">4</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-4"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_5">5</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-5"></span></span></span><span class="span span-right">99.7%</span></p>
+								 -->
+							</div>
+							<div class="dashpanel-table" id="nbiot-perspect-table-custom">
+								<p><i class="fa fa-flag"></i>集团排名-TOP5<span class="nbiot-tab-span nbiot-pers-order-tab" data="2" dir="down">B</span><span class="nbiot-tab-span nbiot-pers-order-tab nth-span-active" data="2" dir="up">T</span></p>
+								<!-- 
+								<p><span class="span span-left"><label class="label_num label_num_1">1</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-1"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_2">2</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-2"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_3">3</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-3"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_4">4</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-4"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_5">5</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-5"></span></span></span><span class="span span-right">99.7%</span></p>
+								-->
+							</div>
+							<div class="dashpanel-table" id="nbiot-perspect-table-tai">
+								<p><i class="fa fa-flag"></i>属地排名-TOP5<span class="nbiot-tab-span nbiot-pers-order-tab" data="3" dir="down">B</span><span class="nbiot-tab-span nbiot-pers-order-tab nth-span-active" data="3" dir="up">T</span></p>
+								<!-- 
+								<p><span class="span span-left"><label class="label_num label_num_1">1</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-1"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_2">2</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-2"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_3">3</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-3"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_4">4</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-4"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_5">5</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-5"></span></span></span><span class="span span-right">99.7%</span></p>
+								-->
+							</div>
+							<div class="dashpanel-table" id="nbiot-perspect-table-tac">
+								<p><i class="fa fa-flag"></i>终端排名-TOP5<span class="nbiot-tab-span nbiot-pers-order-tab" data="4" dir="down">B</span><span class="nbiot-tab-span nbiot-pers-order-tab nth-span-active" data="4" dir="up">T</span></p>
+								<!-- 
+								<p><span class="span span-left"><label class="label_num label_num_1">1</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-1"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_2">2</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-2"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_3">3</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-3"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_4">4</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-4"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_5">5</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-5"></span></span></span><span class="span span-right">99.7%</span></p>
+								-->
+							</div>
+							<div class="dashpanel-table" id="nbiot-perspect-table-mme">
+								<p><i class="fa fa-flag"></i>小区排名-TOP5<span class="nbiot-tab-span nbiot-pers-order-tab" data="5" dir="down">B</span><span class="nbiot-tab-span nbiot-pers-order-tab nth-span-active" data="5" dir="up">T</span></p>
+								<!-- 
+								<p><span class="span span-left"><label class="label_num label_num_1">1</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-1"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_2">2</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-2"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_3">3</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-3"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_4">4</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-4"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_5">5</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-5"></span></span></span><span class="span span-right">99.7%</span></p>
+								-->
+							</div>
+							<div class="dashpanel-table" id="nbiot-perspect-table-user">
+								<p><i class="fa fa-flag"></i>用户排名-TOP5<span class="nbiot-tab-span nbiot-pers-order-tab" data="6" dir="down">B</span><span class="nbiot-tab-span nbiot-pers-order-tab nth-span-active" data="6" dir="up">T</span></p>
+								<!-- 
+								<p><span class="span span-left"><label class="label_num label_num_1">1</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-1"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_2">2</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-2"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_3">3</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-3"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_4">4</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-4"></span></span></span><span class="span span-right">99.7%</span></p>
+								<p><span class="span span-left"><label class="label_num label_num_5">5</label>物流与交通</span><span class="span span-center"><span class="outer-process"><span class="inner-process inner-process-5"></span></span></span><span class="span span-right">99.7%</span></p>
+								-->
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

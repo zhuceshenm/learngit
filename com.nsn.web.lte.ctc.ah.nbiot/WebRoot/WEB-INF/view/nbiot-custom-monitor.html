@@ -1,0 +1,121 @@
+﻿<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta content="width=device-width,initial-scale=1,maximum-scale=1"
+	name="viewport">
+<title>客户监控</title>
+<link rel="stylesheet" type="text/css"
+	href="static/css/jquery.dataTables.css" />
+<link rel="stylesheet" href="static/css/style.css" type="text/css" />
+<link rel="stylesheet" href="static/css/layer.css" />
+<link rel="stylesheet"
+	href="/static/font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" href="static/css/nbiot.css" type="text/css" />
+<script type="text/javascript" src="static/js/charts/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="static/js/jquery.nicescroll.js"></script>
+<script type="text/javascript" src="/static/plugins/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="/static/plugins/highcharts/highcharts-more.js"></script>
+<script type="text/javascript" src="/static/plugins/echarts/echarts.min.js"></script>
+<script type="text/javascript"
+	src="static/js/jquery.dataTables.js"></script>
+<!-- <script src='../dwr/engine.js'></script>
+<script src='../dwr/util.js'></script> -->
+<script type="text/javascript" src="static/js/util.js"></script>
+<!-- <script src='../dwr/interface/nbiotfeaturesService.js'></script>
+<script src='../dwr/interface/nbiotService.js'></script>
+<script src='../dwr/interface/pageService.js'></script>
+<script src='../dwr/interface/userinfoService.js'></script> -->
+<script type="text/javascript" src="/static/plugins/layer/layer.js"></script>
+<script type='text/javascript' src='static/js/My97Date/WdatePicker.js'></script>
+<script type="text/javascript" src="static/js/public.js"></script>
+<script type="text/javascript"
+	src="static/js/nbiot-custom-monitor.js"></script>
+<script type="text/javascript"
+	src="static/js/jquery.pagination.min.js"></script>
+<style type="text/css">
+.box {
+	width: 100%;
+	height: 55px;
+}
+
+.page {
+	float: right;
+}
+
+.custom-details {
+	border-radius: 10px;
+	width: 24.5%;
+	height: 50%;
+	margin-left: 5px;
+	float: left;
+	margin-bottom: 5px;
+}
+
+.custom-details table {
+	height: 100%;
+}
+
+.ui-pagination-container {
+	height: 34px;
+	line-height: 34px;
+}
+
+.ui-pagination-container .ui-pagination-page-item {
+	font-size: 14px;
+	padding: 4px 10px;
+	background: #fff;
+	border: 1px solid #c5b7b7;
+	color: #888;
+	margin: 0 3px;
+	text-decoration: none;
+}
+
+.ui-pagination-container .ui-pagination-page-item:hover {
+	border-color: #568dbd;
+	color: #568dbd;
+	text-decoration: none;
+}
+
+.ui-pagination-container .ui-pagination-page-item.active {
+	background: #568dbd;
+	border-color: #568dbd;
+	color: #fff;
+	cursor: default;
+}
+</style>
+</head>
+<body>
+	<div id="fjMoPageWrap">
+		<div id="moHeaderCon">
+			<script>
+				initTopMenu();
+			</script>
+		</div>
+		<div id="moMainBodyCon">
+			<h2 class="titleNav01" >
+				<script>
+					initTopQueryForSpatil("客户监控");
+				</script>
+			</h2>
+			<div class="container">
+				<div class="top pers-top" style="height: 155px;">
+				</div>
+				<div style="width: 100%; margin: 3px 0px; background-color: #032855; height: 28px;">
+					<a href="#" onclick="queryOneCustomer()" style="float: right;"><img
+						style="width: 20px; height: 22px; padding: 0px 10px; margin: 2px 0"
+						alt="" src="static/img/icons/search-icon.png"></a> <input
+						type="text" name="OneCustomer" placeholder="请输入客户名称"
+						style="float: right; margin-top: 3px;" />
+				</div>
+				<div style="width: 100%; height: 330px" class="all-custom-details">
+				</div>
+				<div class="box">
+					<div id="pagination3" class="page fl"></div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sqlRoot id="">
+	<!-- 加载日期 -->	
+	<sql id="getcities_sense" type="ftl">
+	<![CDATA[
+		select DISTINCT district as city_cn from tas_master.V_CTHQQOE_QOE_DISTRICT where cityname = '${cityparam}'
+	]]>
+	</sql>
+	
+	<!-- 三步一体仪表盘 -->	
+	<sql id="clock_dial_sense1" type="ftl">
+	<![CDATA[
+		select 
+       businesscomp_rate, --业务完成率
+       ability_rate, --能力协商
+       connect_rate, --承载建立
+       netupdate_rate, --网络更新
+       integration_rate --一体化指标
+  from tas_master.v_rpt_4g_iot_data_report
+ where sdate = '${v_sdate}'
+   and data_type = '${v_data_type}'
+   and scity = '${v_scity}'
+   and area = '${v_area}'
+   and c_scene_name = '${v_c_scene_name}'
+   and c_custom_name = '${v_c_custom_name}'
+
+	]]>
+	</sql>
+	
+	<!-- 感知优良率 -->	
+	<sql id="clock_dial_sense2" type="ftl">
+	<![CDATA[
+		select 
+       http_rate, --网页浏览优良率
+       video_rate, --视频优良率
+       game_rate, --游戏优良率
+       im_rate, --即时通信优良率
+       qoe_rate --整体优良率
+  from tas_master.v_rpt_4g_iot_cthqqoe_kqi_report
+ where sdate = '${v_sdate}'
+   and data_type = '${v_data_type}'
+   and scity = '${v_scity}'
+   and area = '${v_area}'
+   and c_scene_name = '${v_c_scene_name}'
+   and c_custom_name = '${v_c_custom_name}'
+
+
+	]]>
+	</sql>
+	
+	<!-- 能力协商 -->	
+	<sql id="clock_dial_sense3" type="ftl">
+	<![CDATA[
+		select 
+       ability_rate, --能力协商
+       attach_rate, --ATTACH成功率
+       pdn_rate, --PDN成功率
+       tau_rate --TAU成功率
+  from tas_master.v_rpt_4g_iot_data_report
+ where
+ sdate = '${v_sdate}'
+   and data_type = '${v_data_type}'
+   and scity = '${v_scity}'
+   and area = '${v_area}'
+   and c_scene_name = '${v_c_scene_name}'
+   and c_custom_name = '${v_c_custom_name}'
+	]]>
+	</sql>
+	
+	
+	<!-- 折线图小时 -->	
+	<sql id="chartsLineHour" type="ftl">
+	<![CDATA[
+		select sdate,
+       businesscomp_rate, --业务完成率
+       ability_rate, --能力协商
+       connect_rate, --承载建立
+       netupdate_rate --网络更新
+  from tas_master.v_rpt_4g_iot_data_report
+ where sdate >= ('${v_sdate}' ::date)
+   and sdate < ('${v_sdate}'::date + interval'1 day')
+   and data_type = 'hour' --写死
+   and scity = '${v_scity}'
+   and area = '${v_area}'
+   and c_scene_name = '${v_c_scene_name}'
+   and c_custom_name = '${v_c_custom_name}'
+ order by sdate
+
+	]]>
+	</sql>
+	
+	<!-- 折线图天 -->	
+	<sql id="chartsLineDay" type="ftl">
+	<![CDATA[
+		select sdate,
+       businesscomp_rate, --业务完成率
+       ability_rate, --能力协商
+       connect_rate, --承载建立
+       netupdate_rate --网络更新
+  from tas_master.v_rpt_4g_iot_data_report
+ where sdate >= ('${v_sdate}'::date -interval'6 day')
+   and sdate < ('${v_sdate}'::date  + interval'1 day')
+   and data_type = 'day' --写死
+   and scity = '${v_scity}'
+   and area = '${v_area}'
+   and c_scene_name = '${v_c_scene_name}'
+   and c_custom_name = '${v_c_custom_name}'
+ order by sdate
+
+	]]>
+	</sql>
+	
+	
+	<!-- 地图 -->	
+	<sql id="chartsMap" type="ftl">
+	<![CDATA[
+		select (case
+         when '${v_scity}' = '全省' then
+          scity
+         else
+          area
+       end) city,
+       integration_rate,
+       qoe_rate,
+       attach_rate,
+       traffic_ul + traffic_dl traffic,
+       user_count
+  from tas_master.v_rpt_4g_iot_data_user_report
+ where sdate = '${v_sdate}'
+   and data_type = '${v_data_type}'
+   and (('${v_scity}' = '全省' and scity <> '全省' and area = '全市') or
+       ('${v_scity}' <> '全省' and scity = '${v_scity}' and area <> '全市'))
+   and scity <> ''
+   and area <> ''
+   and c_scene_name = '${v_c_scene_name}'
+   and c_custom_name = '${v_c_custom_name}'
+
+	]]>
+	</sql>
+	
+	<!-- 端到端排名 -->	
+	<sql id="end_and_end_pm" type="ftl">
+	<![CDATA[
+		select (case
+         when '${v_scity}' = '全省' then
+          scity
+         else
+          area
+       end) city,
+       integration_rate,
+       qoe_rate,
+       attach_rate,
+       user_count,
+       traffic_ul + traffic_dl traffic,
+       business_requests
+  from tas_master.v_rpt_4g_iot_data_user_report
+ where sdate = '${v_sdate}'
+   and data_type = '${v_data_type}'
+   and (('${v_scity}' = '全省' and area = '全市') or
+       ('${v_scity}' <> '全省' and scity = '${v_scity}'))
+   and scity <> ''
+   and area <> ''
+   and c_scene_name = '${v_c_scene_name}'
+   and c_custom_name = '${v_c_custom_name}'
+ order by id, area = '全市' desc
+
+	]]>
+	</sql>
+	
+	
+	<!-- 行业表 -->	
+	<sql id="industry_b" type="ftl">
+	<![CDATA[
+	select sdate,
+       (case
+         when '${v_c_scene_name}' = '所有' then
+          c_scene_name
+         else
+          c_custom_name
+       end) as name,
+       integration_rate,
+       qoe_rate,
+       attach_rate,
+       user_count,
+       traffic_ul + traffic_dl traffic,
+       business_requests
+  from tas_master.v_rpt_4g_iot_data_user_report
+ where c_scene_name!='' and c_custom_name!='' and sdate = '${v_sdate}'
+   and data_type = '${v_data_type}'
+   and scity = '${v_scity}'
+   and area = '${v_area}'
+   and (('${v_c_scene_name}' = '所有' and c_scene_name <> '所有' and
+       c_custom_name = '所有') or
+       ('${v_c_scene_name}' <> '所有' and c_scene_name = '${v_c_scene_name}' and
+       c_custom_name <> '所有')) order by user_count desc
+
+	]]>
+	</sql>
+	
+	
+</sqlRoot>

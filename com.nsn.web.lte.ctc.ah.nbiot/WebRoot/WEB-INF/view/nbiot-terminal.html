@@ -1,0 +1,135 @@
+<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>终端分析</title>
+<link rel="stylesheet" type="text/css"
+	href="static/css/jquery.dataTables.css" />
+<link rel="stylesheet" href="static/css/style.css" type="text/css" />
+<link rel="stylesheet" href="static/css/layer.css" />
+<link rel="stylesheet" href="static/css/nbiot.css" type="text/css" />
+<script type="text/javascript" src="static/js/charts/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="static/js/jquery.nicescroll.js"></script>
+<script type="text/javascript" src="/static/plugins/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="/static/plugins/highcharts/highcharts-more.js"></script>
+<script type="text/javascript" src="/static/plugins/echarts/echarts.min.js"></script>
+<script type="text/javascript"
+	src="static/js/jquery.dataTables.js"></script>
+<!-- <script src='../dwr/engine.js'></script>
+<script src='../dwr/util.js'></script> -->
+<script type="text/javascript" src="static/js/util.js"></script>
+<!-- <script src='../dwr/interface/nbiotService.js'></script>
+<script src='../dwr/interface/pageService.js'></script>
+<script src='../dwr/interface/userinfoService.js'></script>
+<script src='../dwr/interface/nbiotUserService.js'></script> -->
+<script type="text/javascript" src="/static/plugins/layer/layer.js"></script>
+<script type='text/javascript' src='static/js/My97Date/WdatePicker.js'></script>
+<script type="text/javascript" src="static/js/public.js"></script>
+<script type="text/javascript" src="nbiot/js/nbiot-terminal.js"></script>
+
+<style>
+#moMainBodyCon table {
+	width: 99.5% !important
+}
+.greenB {
+	color: #ECA000 !important;
+	text-decoration: underline !important;
+}
+</style>
+</head>
+<body>
+	<div id="fjMoPageWrap">
+		<div id="moHeaderCon">
+			<script>
+				initTopMenu();
+			</script>
+		</div>
+		<div id="moMainBodyCon">
+			<h2 class="titleNav01"
+				style="border-bottom: none; box-shadow: none; margin: 10px 0px;">
+				<a id="dimension" style="margin-right:2%">终端分析</a>
+				<label>日期</label>
+				<input type="text" id="startDatetimepicker_h" class="J-SDATE"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){initPageData();}})"/>
+				<div style="width: 16.66%; text-align: center; float: right;">
+					<label style="float: none; margin-right: 0px;">业务次数</label> <label
+						id="label3"
+						style="float: none; margin-right: 0px; color: #ECA000;"></label>
+				</div>
+
+				<div style="width: 16.66%; text-align: center; float: right;">
+					<label style="float: none; margin-right: 0px;">流量</label> <label
+						id="label2"
+						style="float: none; margin-right: 0px; color: #ECA000;"></label>
+				</div>
+				
+				<div style="width: 16.66%; text-align: center; float: right;">
+					<label style="float: none; margin-right: 0px;">当前 终端数</label> <label
+						id="label1"
+						style="float: none; margin-right: 0px; color: #ECA000;"></label>
+				</div>
+			</h2>
+			<div class="container">
+				<div id="moMainBodyIn" style="margin-top: 5px; margin-bottom: 5px;">
+					<div style="width: 24.5%;float: left; border: 1px solid #2f4f80">
+						<table  class="tablesorter tableLowTh"  style="background: #284567;border: 0px;" >
+						<thead>
+							<tr  ><th style='background: #284567;border: 0px;'></th><th style='background: #284567;border: 0px;'>4G</th><th style='background: #284567;border: 0px;'>2G</th><th style='background: #284567;border: 0px;'>NB</th></tr>
+						</thead>
+						<tbody id="sub-tbody">
+<!-- 								<tr style="background: #032855" ><td style="background: #032855;border: 0px;">asdf</td><td >4G</td><td>2G</td><td>NB</td></tr> -->
+<!-- 									<tr style="background: #032855" ><td style="background: #032855;border: 0px;">asdf</td><td style="background: #032855;border: 0px;">4G</td><td>2G</td><td>NB</td></tr> -->
+						</tbody>
+						</table>
+					</div>
+					<div style="width: 75%;float: left;">
+					
+						<div class="moThirdTab" style="padding: 2px 0.25%;">
+	     						<div id="dmChart1" style="height: 180px; margin: 0 auto"></div>
+						</div>
+						<div class="moThirdTab" style="padding: 2px 0.25%;">
+	    						<div id="dmChart2" style="height: 180px; margin: 0 auto"></div>
+						</div>
+						<div class="moThirdTab" style="padding: 2px 0.25%;">
+	     						<div id="dmChart3" style="height: 180px; margin: 0 auto"></div>
+						</div>
+						<div class="moThirdTab" style="padding: 2px 0.25%;">
+	     						<div id="dmChart4" style="height: 180px; margin: 0 auto"></div>
+						</div>
+						<div class="moThirdTab" style="padding: 2px 0.25%;">
+	     						<div id="dmChart5" style="height: 180px; margin: 0 auto"></div>
+						</div>
+						<div class="moThirdTab" style="padding: 2px 0.25%;">
+	     						<div id="dmChart6" style="height: 180px; margin: 0 auto"></div>
+						</div>
+						</div>
+				</div>
+				<div class="NEnav">
+						<a href="javascript:;" class="switch-tab-table active" data="0">4G</a> 
+						<a href="javascript:;" class="switch-tab-table" data="1">2G</a>
+						<a href="javascript:;" class="switch-tab-table" data="2">NB</a>
+						<img class="_ico_exp" data="1" src="static/img/excel.png" style="float: right;"/>
+					</div>
+					<table class="tablesorter tableLowTh" id="subTable1" data="0">
+						<thead>
+							<tr>
+								<tr><th>终端型号</th><th>用户数</th><th>attach成功率</th><th>DNS成功率</th><th>TCP成功率</th><th>HTTP成功率</th><th>上行流量MB</th><th>下行流量MB</th><th>TCP无线时延ms</th><th>top排名</th></tr>
+							</tr>
+						</thead>
+<!-- 						<tbody id="subTable1-tbody"></tbody> -->
+					</table>
+				</div>
+		</div>
+	</div>
+	
+	<div id="terminalDetail" class="detail-hidden-div">
+		<!-- 		<img class="_ico_exp" data="1" src="./images/excel.png" /> -->
+		
+		<table class='tablesorter tableLowTh' id="detail-table"></table>
+	</div>
+	<div id="terminalDetail2" class="detail-hidden-div">
+				<img class="_ico_exp" data="33" src="./images/excel.png" style="float: right;" />
+		
+		<table class='tablesorter tableLowTh' id="detail-table2"></table>
+	</div>
+</body>
+</html>

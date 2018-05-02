@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sqlRoot id="">
+	<!-- 物联网用户数 -->	
+	<sql id="internet_users" type="ftl">
+	<![CDATA[
+		--物联网在线用户数     
+		select count(distinct imsi) from sqmdb.cfg_d_user_details; 
+		
+	]]>
+	</sql>
+	
+	
+	<!-- 公告板 -->	
+	<sql id="init_perspect_4gnb" type="ftl">
+	<![CDATA[
+   select t.rn,
+       t.c_scene_name,
+       (t1.traffic_ul + t1.traffic_dl) traffic_4g,
+       t1.user_count user_count_4g, --用户数
+       t2.nb_user user_count_nb,
+       t2.flow traffic_nb
+  from tas_master.v_top_scenename t
+  left join tas_master.v_rpt_4g_iot_data_user_report t1
+    on t1.sdate = '${v_sdate}'
+   and t1.data_type = 'day'
+   and t1.scity = '全省'
+   and t1.area = '全市'
+   and t1.c_scene_name not in ('', '所有')
+   and t1.c_custom_name = '所有'
+   and t.c_scene_name = t1.c_scene_name
+
+  left join sqmdb.rpt_whole_user_flow_servince_d t2
+   on t2.sdate='${v_sdate}'
+   and t.c_scene_name = t2.c_scene_name
+ order by rn;
+		
+	]]>
+	</sql>
+	
+	
+	<!-- 第二个模块4g -->	
+	<sql id="init_chart_data1_4g" type="ftl">
+	<![CDATA[
+   select 
+       c_scene_name,
+     
+       traffic_ul + traffic_dl traffic,  --流量
+       user_count,  --用户数
+       business_requests,  --业务请求次数
+       divide(traffic_ul + traffic_dl,user_count,0) user_traffic --平均每用户流量
+   from tas_master.v_rpt_4g_iot_data_user_report
+ where sdate = '${v_sdate}'
+   and data_type = 'day'
+   and scity = '全省'
+   and area = '全市'
+   and c_scene_name not in ('','所有')
+   and c_custom_name = '所有' order by user_count desc limit 10; 
+		
+	]]>
+	</sql>
+	
+	<!-- 第二个模块4g -->	
+	<sql id="init_chart_data2_4g" type="ftl">
+	<![CDATA[
+   select c_scene_name, count(distinct product)  --终端数
+  from tas_master.v_rpt_4g_iot_product_report
+ where sdate = '${v_sdate}'
+   and data_type = 'day'
+   and scity = '全省'
+   and area = '全市'
+   and c_scene_name not in ('', '所有')
+ group by sdate, c_scene_name order by count desc limit 10;
+	]]>
+	</sql>
+	
+	<!-- 第二个模块nb -->	
+	<sql id="init_chart_data1_nb" type="ftl">
+	<![CDATA[
+   		select c_scene_name, 
+   		COALESCE(nb_user,0) user_count,
+   		COALESCE(flow,0) traffic,
+   		COALESCE(servince_count,0) business_requests,
+   		COALESCE(avg_flow,0) user_traffic 
+   		from sqmdb.rpt_whole_user_flow_servince_d  
+   		where sdate='${v_sdate}' and c_scene_name!='' 
+   		order by user_count desc limit 10
+	]]>
+	</sql>
+	<!-- 第二个模块nb -->	
+	<sql id="init_chart_data2_nb" type="ftl">
+	<![CDATA[
+   		select c_scene_name,
+   		COALESCE(tac_num,0) count 
+   		from sqmdb.rpt_whole_scene_tac_d 
+   		where sdate='${v_sdate}' and c_scene_name!='' 
+   		order by tac_num desc limit 10
+   		
+	]]>
+	</sql>
+	
+	
+	<!-- 行业排名4g -->	
+	<sql id="industry_rank_4g" type="ftl">
+	<![CDATA[
+   		select sdate, c_scene_name type_name, integration_rate rate
+  from (select sdate,
+               c_scene_name,
+               integration_rate, --一体化指标
+               row_number() over(order by ${down_up}) rn  --最优  
+               --row_number() over(order by integration_rate) rn  --最差
+          from tas_master.v_rpt_4g_iot_data_user_report
+         where sdate = '${v_sdate}'
+           and data_type = 'day'
+           and scity = '全省'
+           and area = '全市'
+           and c_scene_name not in ('', '所有')
+           and c_custom_name = '所有' 
+           and integration_rate is not null
+        ) t
+ where rn <= 5
+order by rn;
+   		
+	]]>
+	</sql>
+	<!-- 集团排名4g -->	
+	<sql id="group_rank_4g" type="ftl">
+	<![CDATA[
+   		select sdate,c_scene_name, c_custom_name type_name,integration_rate rate
+  from (select sdate,c_scene_name,
+               c_custom_name,
+               integration_rate, --一体化指标
+               row_number() over(order by ${down_up}) rn  --最优  
+               --row_number() over(order by integration_rate desc) rn  --最差
+          from tas_master.v_rpt_4g_iot_data_user_report
+         where sdate = '${v_sdate}'
+           and data_type = 'day'
+           and scity = '全省'
+           and area = '全市'
+           and c_custom_name not in ('', '所有')
+           and integration_rate is not null
+        ) t
+ where rn <= 5
+order by rn;
+   		
+	]]>
+	</sql>
+	<!-- 属地排名4g -->	
+	<sql id="terr_rank_4g" type="ftl">
+	<![CDATA[
+   		select sdate, scity type_name, integration_rate rate
+  from (select sdate,
+               scity,
+               integration_rate, --一体化指标
+               row_number() over(order by ${down_up}) rn --最优  
+        --row_number() over(order by integration_rate desc) rn  --最差
+          from tas_master.v_rpt_4g_iot_data_user_report
+         where sdate = '${v_sdate}'
+           and data_type = 'day'
+           and scity not in ('', '全省')
+           and area = '全市'
+           and c_scene_name = '所有'
+           and c_custom_name = '所有'
+           and integration_rate is not null) t
+ where rn <= 5
+ order by rn;
+   		
+	]]>
+	</sql>
+	<!-- 终端排名4g -->	
+	<sql id="terminal_rank_4g" type="ftl">
+	<![CDATA[
+   		select sdate, product type_name, integration_rate rate
+  from (select sdate,
+               product,
+               integration_rate, --一体化指标
+               row_number() over(order by ${down_up}) rn --最优  
+        --row_number() over(order by integration_rate desc) rn  --最差
+          from tas_master.v_rpt_4g_iot_product_report
+         where sdate = '${v_sdate}'
+           and data_type = 'day'
+           and scity = '全省'
+           and area = '全市'
+           and c_scene_name = '所有'
+           and integration_rate is not null) t
+ where rn <= 5
+ order by rn;
+   		
+	]]>
+	</sql>
+	<!-- 小区排名4g -->	
+	<sql id="quarters_rank_4g" type="ftl">
+	<![CDATA[
+   		select sdate, eci type_name, attach_rate rate
+  from (select sdate,
+               eci,
+               attach_rate,
+               row_number() over(order by ${down_up}) rn --最优  
+        --row_number() over(order by attach_rate desc) rn  --最差
+          from tas_master.v_rpt_4g_iot_eci_imsi_report
+         where sdate = '${v_sdate}'
+           and eci_flag = 0
+           and attach_rate is not null) t
+ where rn <= 5
+ order by rn;
+   		
+	]]>
+	</sql>
+	<!-- 用户排名4g -->	
+	<sql id="users_rank_4g" type="ftl">
+	<![CDATA[
+   		select sdate, imsi type_name, attach_rate rate
+  from (select sdate,
+               imsi,
+               msisdn,
+               imei_tac,
+               attach_rate,
+               row_number() over(order by ${down_up}) rn --最优  
+        --row_number() over(order by attach_rate desc) rn  --最差
+          from tas_master.v_rpt_4g_iot_eci_imsi_report
+         where sdate = '${v_sdate}'
+           and imsi_flag = 0
+           and attach_rate is not null) t
+ where rn <= 5
+ order by rn;
+   		
+	]]>
+	</sql>
+	
+	
+	
+	<!-- 排名nb -->	
+	<sql id="all_rank_nb" type="ftl">
+	<![CDATA[
+   		select *from  
+			sqmdb.rpt_whole_scene_top_d  
+			where sdate=date'${v_sdate}' 
+			and bs='${type}' and rate is not null 
+			order by ${rate} limit 5;
+   		
+	]]>
+	</sql>
+	
+	
+</sqlRoot>
